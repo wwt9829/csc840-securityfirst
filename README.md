@@ -3,6 +3,6 @@ Created for DSU's Cyber Operations I course
 
 ## Windows PrivEsc (Horizontal/Vertical)
 
-## Linux Horziontal
+## Linux Horziontal PrivEsc
 
-## Linux Vertical
+## Linux Vertical PrivEsc
