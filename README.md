@@ -32,7 +32,7 @@ Created for DSU's Cyber Operations I course
 8. Restart the box.
 9. Open the Services MMC snap-in. The `[Service Name]` should appear in the list. Ensure the startup type is set to Automatic so it executes when the box starts.
 
-#### Exploitation
+### Exploitation
 #### Horizontal PrivEsc via Unquoted Service Path
 1. Log on to the standard user.
 2. Create a simple TCP reverse shell with `msfvenom` on the Linux Exercises box:
