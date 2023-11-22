@@ -91,6 +91,7 @@ root	ALL=(ALL:ALL) ALL
 ### Exploitation
 1. Run `visudo` as the second user.
 2. Append `,/usr/bin/su` to the privilege specifcation for the second user:
+      * A preconfigured `/etc/sudoers` file is `sudoers` in the Linux PrivEsc/Lab 3 folder in the repo as well.
 
 ```
 # User privilege specification
