@@ -1,5 +1,5 @@
 # Security First Principles: Least Privilege
-Sample learning module for a Dakota State University MS-level CSC course
+Sample learning module for a Dakota State University MS-level computer science (CSC) course
 
 ## General Information
 -   Author: Wyatt Tauber
@@ -28,7 +28,7 @@ A new CVE for this version of Apache is announced a few days later, and the admi
 ### Best Practice
 The administrator spends a significant amount of time learning how to set up LAMP securely on CentOS, and how to write proper SELinux rules for a web server. Management isn't terribly happy about the time it took to set up the server, but the administrator's completed SELinux configuration ends up being deployed on the production webserver as well.
 
-Even though they still don't have enough time to patch the Apache CVE, the attacker is relatively unskilled and unwilling to spend time attempting to exploit a target with SELinux running. They move on to an easier target. When several competitiors are compromised and their websites are taken down, the small business gains several new customers.
+Even though the administrator still don't have enough time to patch the Apache CVE, the attacker is relatively unskilled and unwilling to spend time attempting to exploit a target with SELinux running. They move on to an easier target. When several competitiors are compromised and their websites are taken down, the small business gains several new customers.
 
 ## Additional Resources
 1.  [What Is Privilege Escalation?](https://www.proofpoint.com/us/threat-reference/privilege-escalation)
