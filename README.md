@@ -1,5 +1,5 @@
 # Security First Principles: Least Privilege
-Sample learning module for a Dakota State University MS-level course
+Sample learning module for a Dakota State University MS-level CSC course
 
 ## General Information
 -   Author: Wyatt Tauber
