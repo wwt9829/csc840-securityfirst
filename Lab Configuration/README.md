@@ -6,7 +6,7 @@
 | Windows Exercises | Windows 10 Pro build 19044 |
 * Windows Defender is disabled via Group Policy on the Windows Exercises box.
 
-## Lab Exercise 1: Widnows Horizontal/Vertical PrivEsc
+## Lab Exercise 1: Windows Horizontal/Vertical PrivEsc
 ### Configuration
 #### Horizontal PrivEsc via Unquoted Service Path
 1. Add two additional users the box, with different passwords. One should be a standard user and the other should be an administrator. Use the administrator-level user for the following steps.
