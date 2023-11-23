@@ -1,5 +1,5 @@
-# Security First Principles: Least Privilege Module
-Sample lab for a Dakota State University MS-level course
+# Security First Principles: Least Privilege
+Sample module for a Dakota State University MS-level course
 
 ## General Information
 -   Author: Wyatt Tauber
