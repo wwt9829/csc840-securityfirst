@@ -1,5 +1,5 @@
 # Security First Principles: Least Privilege Module
-Sample lab for DSU's Cyber Operations I course
+Sample lab for a Dakota State University MS-level course
 
 ## General Information
 -   Author: Wyatt Tauber
