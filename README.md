@@ -55,15 +55,13 @@ Even though the administrator still don't have enough time to patch the Apache C
 [Comparing Access Control: RBAC, MAC, DAC, RuBAC, ABAC](https://techgenix.com/5-access-control-types-comparison/)
 
 ### Privilege Escalation
-[What Is Privilege Escalation?](https://www.proofpoint.com/us/threat-reference/privilege-escalation)
+[What Is Privilege Escalation? - ProofPoint](https://www.proofpoint.com/us/threat-reference/privilege-escalation)
 
-[What is Privilege Escalation?](https://www.crowdstrike.com/cybersecurity-101/privilege-escalation/)
+[What is Privilege Escalation? - CrowdStrike](https://www.crowdstrike.com/cybersecurity-101/privilege-escalation/)
 
 [Understanding Privilege Escalation and 5 Common Attack Techniques](https://www.cynet.com/network-attacks/privilege-escalation/)
 
 #### Windows
-[Privilege escalation on Windows: When you want it and when you don’t](https://delinea.com/blog/windows-privilege-escalation#vert-hor)
-
 [Privilege escalation on Windows: When you want it and when you don’t](https://delinea.com/blog/windows-privilege-escalation)
 
 #### Linux
