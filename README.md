@@ -12,11 +12,11 @@ Access control rules apply to every object in an operating system. Organizations
 Each of these issues can be addressed by the security first principle of least privilege, which ensures that users are given only the minimum level of privileges and permissions needed to perform required tasks. Organizations can protect themselves through the implementation of standardized security models, technical safeguards, and routine job responsibility audits. These actions reduce an organization’s attack surface, significantly curtailing the risk to business assets, operations, and people.
 
 ## Three Main Ideas
-What are privileges and permissions and how are they implemented?
-How is security first design supported by the principle of least privilege?
--    What role does access control play in user security?
--    What role do security models play in file system security?
-What privilege escalation vulnerabilities are introduced when the principle is not followed?
+1. What are privileges and permissions and how are they implemented?
+2. How is security first design supported by the principle of least privilege?
+    -    What role do access control privileges play in security first design?
+    -    What role do security models play in security first design?
+3. What privilege escalation vulnerabilities are introduced when the principle is not followed?
 
 ## Example
 ### Scenario
