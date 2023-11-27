@@ -1,6 +1,8 @@
 # Security First Principles: Least Privilege
 Sample learning module for a Dakota State University MS-level computer science (CSC) course
 
+[Least Privilege Lecture](https://youtu.be/hmzqLS8m448)
+
 ## General Information
 -   Author: Wyatt Tauber
 -   Date: November 27th, 2023
